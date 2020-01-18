@@ -1,8 +1,6 @@
 import babel from "rollup-plugin-babel";
 import resolve from "rollup-plugin-node-resolve";
 
-const extensions = [".ts", ".js"];
-
 export default {
     input: "src/index.ts",
     output: {
@@ -12,10 +10,10 @@ export default {
     plugins: [
         resolve({
             jsnext: true,
-            extensions,
+            extensions: [".ts", ".js"],
         }),
         babel({
-            extensions,
+            extensions: [".ts", ".js"],
             exclude: "node_modules/**", // only transpile our source code
         }),
     ],

@@ -1,0 +1,15 @@
+{
+  "pluginAlias": "Sonos",
+  "pluginType": "accessory",
+  "schema": {
+    "type": "object",
+    "properties": {
+      "nonPlayableDevices": {
+        "title": "Non Playable Device ID's",
+        "type": "string",
+        "required": false,
+        "default": "11;8;4"
+      }
+    }
+  }
+}
