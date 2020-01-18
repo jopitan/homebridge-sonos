@@ -5,15 +5,15 @@
     "type": "object",
     "properties": {
       "name": {
-        "title": "name",
+        "title": "Homekit Name",
         "type": "string",
-        "required": true,
+        "required": false,
         "default": "Living Room"
       },
       "room": {
-        "title": "room",
+        "title": "Sonos Room Name",
         "type": "string",
-        "required": true,
+        "required": false,
         "default": "Living Room"
       },
       "nonPlayableDevices": {
