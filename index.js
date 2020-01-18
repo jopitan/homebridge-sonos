@@ -1,8 +1,7 @@
 const sonos = require('sonos');
 const Sonos = require('sonos').Sonos;
 const _ = require('underscore');
-const inherits = require('util').inherits;
-let Service, Characteristic, VolumeCharacteristic;
+let Service, Characteristic;
 const sonosDevices = new Map();
 const sonosAccessories = [];
 const Listener = require('sonos/lib/events/listener');
@@ -13,6 +12,12 @@ module.exports = function (homebridge) {
 
     homebridge.registerAccessory("homebridge-sonos", "Sonos", SonosAccessory);
 };
+
+const nonPlayableDevices = [
+    '11', // Unknown
+    '8', // Sonos SUB
+    '4' // Sonos Bridge
+];
 
 
 //
@@ -141,8 +146,7 @@ function SonosAccessory(log, config) {
 }
 
 SonosAccessory.zoneTypeIsPlayable = function (zoneType) {
-    // 8 is the Sonos SUB, 4 is the Sonos Bridge, 11 is unknown
-    return !['11', '8', '4'].includes(zoneType);
+    return !nonPlayableDevices.includes(zoneType);
 };
 
 SonosAccessory.prototype.search = function () {
