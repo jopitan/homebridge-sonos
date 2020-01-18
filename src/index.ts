@@ -7,20 +7,7 @@ module.exports = function (homebridge) {
     Service = homebridge.hap.Service;
     Characteristic = homebridge.hap.Characteristic;
 
-    VolumeCharacteristic = function() {
-        Characteristic.call(this, 'Volume', '91288267-5678-49B2-8D22-F57BE995AA93');
-        this.setProps({
-            format: Characteristic.Formats.INT,
-            unit: Characteristic.Units.PERCENTAGE,
-            maxValue: 100,
-            minValue: 0,
-            minStep: 1,
-            perms: [Characteristic.Perms.READ, Characteristic.Perms.WRITE, Characteristic.Perms.NOTIFY]
-        });
-        this.value = this.getDefaultValue();
-    };
-
-    inherits(VolumeCharacteristic, Characteristic);
+    addVolumeCharacteristics();
 
     homebridge.registerAccessory("homebridge-sonos", "Sonos", SonosAccessory);
 };
@@ -55,7 +42,7 @@ class SonosAccessory {
             .on('set', this.setOn.bind(this));
 
         this.service
-            .addCharacteristic(Characteristic.Volume)
+            .addCharacteristic(Characteristic.Brightness)
             .on('get', this.getVolume.bind(this))
             .on('set', this.setVolume.bind(this));
 
@@ -170,4 +157,21 @@ class SonosAccessory {
         });
     }
 
+}
+
+function addVolumeCharacteristics() {
+    VolumeCharacteristic = function() {
+        Characteristic.call(this, 'Volume', '91288267-5678-49B2-8D22-F57BE995AA93');
+        this.setProps({
+            format: Characteristic.Formats.INT,
+            unit: Characteristic.Units.PERCENTAGE,
+            maxValue: 100,
+            minValue: 0,
+            minStep: 1,
+            perms: [Characteristic.Perms.READ, Characteristic.Perms.WRITE, Characteristic.Perms.NOTIFY]
+        });
+        this.value = this.getDefaultValue();
+    };
+
+    inherits(VolumeCharacteristic, Characteristic);
 }
