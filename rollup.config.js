@@ -9,7 +9,6 @@ export default {
     },
     plugins: [
         resolve({
-            jsnext: true,
             extensions: [".ts", ".js"],
         }),
         babel({
