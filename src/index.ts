@@ -9,17 +9,12 @@ module.exports = function (homebridge) {
     homebridge.registerAccessory("homebridge-sonos", "Sonos", SonosAccessory);
 };
 
-const nonPlayableDevices = [
-    '11', // Unknown
-    '8', // Sonos SUB
-    '4' // Sonos Bridge
-];
-
 class SonosAccessory {
 
     private name;
     private room;
     private mute;
+    private nonPlayableDevices;
 
     private service;
     private device;
@@ -28,6 +23,7 @@ class SonosAccessory {
         this.name = this.config["name"];
         this.room = this.config["room"];
         this.mute = this.config["mute"];
+        this.nonPlayableDevices = this.config["nonPlayableDevices"].split(";");
 
         if (!this.room) throw new Error("You must provide a config value for 'room'.");
 
@@ -51,7 +47,7 @@ class SonosAccessory {
     }
 
     public zoneTypeIsPlayable(zoneType) {
-        return !nonPlayableDevices.includes(zoneType);
+        return !this.nonPlayableDevices.includes(zoneType);
     }
 
     public search() {
