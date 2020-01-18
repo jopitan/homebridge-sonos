@@ -4,6 +4,18 @@
   "schema": {
     "type": "object",
     "properties": {
+      "name": {
+        "title": "name",
+        "type": "string",
+        "required": true,
+        "default": "Living Room"
+      },
+      "room": {
+        "title": "room",
+        "type": "string",
+        "required": true,
+        "default": "Living Room"
+      },
       "nonPlayableDevices": {
         "title": "Non Playable Device ID's",
         "type": "string",
