@@ -142,7 +142,7 @@ function SonosAccessory(log, config) {
 
 SonosAccessory.zoneTypeIsPlayable = function (zoneType) {
     // 8 is the Sonos SUB, 4 is the Sonos Bridge, 11 is unknown
-    return zoneType !== '11' && zoneType !== '8' && zoneType !== '4';
+    return !['11', '8', '4'].includes(zoneType);
 };
 
 SonosAccessory.prototype.search = function () {
