@@ -43,7 +43,7 @@ class SonosAccessory {
 
         if (!this.room) throw new Error("You must provide a config value for 'room'.");
 
-        this.service = new Service.StatelessProgrammableSwitch(this.name);
+        this.service = new Service.Lightbulb(this.name);
 
         this.createCharacteristics();
     }
