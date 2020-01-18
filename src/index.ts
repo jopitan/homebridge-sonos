@@ -42,7 +42,7 @@ class SonosAccessory {
             .on('set', this.setOn.bind(this));
 
         this.service
-            .addCharacteristic(Characteristic.Brightness)
+            .getCharacteristic(Characteristic.Brightness)
             .on('get', this.getVolume.bind(this))
             .on('set', this.setVolume.bind(this));
 
