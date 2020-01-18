@@ -1,10 +1,11 @@
 const sonos = require('sonos');
 const Sonos = require('sonos').Sonos;
+const Listener = require('sonos/lib/events/listener');
 const _ = require('underscore');
+
 let Service, Characteristic;
 const sonosDevices = new Map();
 const sonosAccessories = [];
-const Listener = require('sonos/lib/events/listener');
 
 module.exports = function (homebridge) {
     Service = homebridge.hap.Service;
