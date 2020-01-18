@@ -151,10 +151,10 @@ class SonosAccessory {
             .on('get', this.getOn)
             .on('set', this.setOn);
 
-        // this.service
-        //     .addCharacteristic(Characteristic.Volume)
-        //     .on('get', this.getVolume)
-        //     .on('set', this.setVolume);
+        this.service
+            .addCharacteristic(Characteristic.Volume)
+            .on('get', this.getVolume)
+            .on('set', this.setVolume);
 
         this.search();
     }
@@ -232,6 +232,39 @@ class SonosAccessory {
                 callback(err || null);
             });
         }
+    }
+
+    public getVolume(callback) {
+        if (!this.device) {
+            this.log.warn("Ignoring request; Sonos device has not yet been discovered.");
+            callback(new Error("Sonos has not been discovered yet."));
+            return;
+        }
+
+        this.device.getVolume((err, volume) => {
+            if (err) {
+                callback(err);
+            } else {
+                this.log("Current volume: %s", volume);
+                callback(null, Number(volume));
+            }
+
+        });
+    }
+
+    public setVolume(volume, callback) {
+        if (!this.device) {
+            this.log.warn("Ignoring request; Sonos device has not yet been discovered.");
+            callback(new Error("Sonos has not been discovered yet."));
+            return;
+        }
+
+        this.log("Setting volume to %s", volume);
+
+        this.device.setVolume(volume + "", (err, data) => {
+            this.log("Set volume response with data: " + data);
+            callback(err || null);
+        });
     }
 
 }

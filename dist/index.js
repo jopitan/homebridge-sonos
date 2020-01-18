@@ -182,11 +182,8 @@ function () {
   _createClass(SonosAccessory, [{
     key: "createCharacteristics",
     value: function createCharacteristics() {
-      this.service.getCharacteristic(Characteristic.On).on('get', this.getOn).on('set', this.setOn); // this.service
-      //     .addCharacteristic(Characteristic.Volume)
-      //     .on('get', this.getVolume)
-      //     .on('set', this.setVolume);
-
+      this.service.getCharacteristic(Characteristic.On).on('get', this.getOn).on('set', this.setOn);
+      this.service.addCharacteristic(Characteristic.Volume).on('get', this.getVolume).on('set', this.setVolume);
       this.search();
     }
   }, {
@@ -283,6 +280,45 @@ function () {
           callback(err || null);
         });
       }
+    }
+  }, {
+    key: "getVolume",
+    value: function getVolume(callback) {
+      var _this4 = this;
+
+      if (!this.device) {
+        this.log.warn("Ignoring request; Sonos device has not yet been discovered.");
+        callback(new Error("Sonos has not been discovered yet."));
+        return;
+      }
+
+      this.device.getVolume(function (err, volume) {
+        if (err) {
+          callback(err);
+        } else {
+          _this4.log("Current volume: %s", volume);
+
+          callback(null, Number(volume));
+        }
+      });
+    }
+  }, {
+    key: "setVolume",
+    value: function setVolume(volume, callback) {
+      var _this5 = this;
+
+      if (!this.device) {
+        this.log.warn("Ignoring request; Sonos device has not yet been discovered.");
+        callback(new Error("Sonos has not been discovered yet."));
+        return;
+      }
+
+      this.log("Setting volume to %s", volume);
+      this.device.setVolume(volume + "", function (err, data) {
+        _this5.log("Set volume response with data: " + data);
+
+        callback(err || null);
+      });
     }
   }]);
 
