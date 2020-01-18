@@ -162,6 +162,7 @@ class SonosAccessory {
 function addVolumeCharacteristics() {
     VolumeCharacteristic = function() {
         Characteristic.call(this, 'Volume', '91288267-5678-49B2-8D22-F57BE995AA93');
+        console.log(this);
         this.setProps({
             format: Characteristic.Formats.INT,
             unit: Characteristic.Units.PERCENTAGE,
