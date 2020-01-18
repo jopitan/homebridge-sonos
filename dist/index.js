@@ -184,8 +184,8 @@ function () {
   _createClass(SonosAccessory, [{
     key: "createCharacteristics",
     value: function createCharacteristics() {
-      this.service.getCharacteristic(Characteristic.On).on('get', this.getOn).on('set', this.setOn);
-      this.service.addCharacteristic(Characteristic.Volume).on('get', this.getVolume).on('set', this.setVolume);
+      this.service.getCharacteristic(Characteristic.On).on('get', this.getOn.bind(this)).on('set', this.setOn.bind(this));
+      this.service.addCharacteristic(Characteristic.Volume).on('get', this.getVolume.bind(this)).on('set', this.setVolume.bind(this));
       this.search();
     }
   }, {
