@@ -12,7 +12,7 @@ module.exports = function (homebridge) {
     Characteristic = homebridge.hap.Characteristic;
 
     homebridge.registerAccessory("homebridge-sonos", "Sonos", SonosAccessory);
-}
+};
 
 
 //
@@ -152,9 +152,7 @@ SonosAccessory.prototype.search = function () {
 
         device.deviceDescription(function (err, description) {
 
-            const zoneType = description["zoneType"];
-            const roomName = description["roomName"];
-
+            const {zoneType, roomName} = description;
             if (!SonosAccessory.zoneTypeIsPlayable(zoneType)) {
                 this.log.debug("Sonos device %s is not playable (has an unknown zone type of %s); ignoring", host, zoneType);
                 return;
@@ -189,7 +187,7 @@ SonosAccessory.prototype.oldSearch = function () {
             device.getTopology(function (err, topology) {
                 if (!err && topology) {
                     topology.zones.forEach(function (group) {
-                        if (group.location === 'http://' + data.ip + ':' + data.port + '/xml/device_description.xml') {
+                        if (group.location === `http://${data.ip}:${data.port}/xml/device_description.xml`) {
                             _.extend(data, group);
                             data.discoverycompleted = 'true';
                         } else {
@@ -240,29 +238,15 @@ SonosAccessory.prototype.getOn = function (callback) {
         return;
     }
 
-    if (!this.mute) {
-        this.device.getCurrentState(function (err, state) {
-            if (err) {
-                callback(err);
-            } else {
-                this.log.warn("Current state for Sonos: " + state);
-                const on = (state === "playing");
-                callback(null, on);
-            }
-        }.bind(this));
-    } else {
-        this.device.getMuted(function (err, state) {
-
-            if (err) {
-                callback(err);
-            } else {
-                this.log.warn("Current state for Sonos: " + state);
-                const on = (state === false);
-                callback(null, on);
-            }
-        }.bind(this));
-
-    }
+    this.device[!this.mute ? "getCurrentState" : "getMuted"](function (err, state) {
+        if (err) {
+            callback(err);
+        } else {
+            this.log.warn("Current state for Sonos: " + state);
+            const on = (state === (!this.mute ? "playing" : false));
+            callback(null, on);
+        }
+    }.bind(this));
 }
 
 SonosAccessory.prototype.setOn = function (on, callback) {
