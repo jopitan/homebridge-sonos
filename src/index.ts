@@ -1,7 +1,7 @@
-import sonos from 'sonos';
-import {Sonos} from 'sonos';
-import Listener from 'sonos/lib/events/listener';
-import _ from 'underscore';
+import * as sonos from 'sonos';
+const Sonos = require('sonos').Sonos;
+import * as Listener from 'sonos/lib/events/listener';
+import * as _ from 'underscore';
 
 let Service, Characteristic;
 const sonosDevices = new Map();
