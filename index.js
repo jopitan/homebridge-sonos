@@ -143,7 +143,7 @@ function SonosAccessory(log, config) {
 SonosAccessory.zoneTypeIsPlayable = function (zoneType) {
     // 8 is the Sonos SUB, 4 is the Sonos Bridge, 11 is unknown
     return zoneType !== '11' && zoneType !== '8' && zoneType !== '4';
-}
+};
 
 SonosAccessory.prototype.search = function () {
     const search = sonos.search(function (device) {
@@ -170,7 +170,7 @@ SonosAccessory.prototype.search = function () {
             }
         }.bind(this));
     }.bind(this));
-}
+};
 
 SonosAccessory.prototype.oldSearch = function () {
 
@@ -225,11 +225,11 @@ SonosAccessory.prototype.oldSearch = function () {
             }.bind(this));
         }.bind(this));
     }.bind(this));
-}
+};
 
 SonosAccessory.prototype.getServices = function () {
     return [this.service];
-}
+};
 
 SonosAccessory.prototype.getOn = function (callback) {
     if (!this.device) {
@@ -247,7 +247,7 @@ SonosAccessory.prototype.getOn = function (callback) {
             callback(null, on);
         }
     }.bind(this));
-}
+};
 
 SonosAccessory.prototype.setOn = function (on, callback) {
     if (!this.device) {
@@ -256,50 +256,20 @@ SonosAccessory.prototype.setOn = function (on, callback) {
         return;
     }
 
-    this.log("Setting power to " + on);
+    this.log("Setting power to %s", on);
 
     if (!this.mute) {
-        if (on) {
-            this.device.play(function (err, success) {
-                this.log("Playback attempt with success: " + success);
-                if (err) {
-                    callback(err);
-                } else {
-                    callback(null);
-                }
-            }.bind(this));
-        } else {
-            this.device.pause(function (err, success) {
-                this.log("Pause attempt with success: " + success);
-                if (err) {
-                    callback(err);
-                } else {
-                    callback(null);
-                }
-            }.bind(this));
-        }
+        this.device[on ? "play" : "pause"](function (err, success) {
+            this.log("%s attempt with success: %s", on ? "Playback" : "Pause", success);
+            callback(err || null);
+        }.bind(this));
     } else {
-        if (on) {
-            this.device.setMuted(false, function (err, success) {
-                this.log("Unmute attempt with success: " + success);
-                if (err) {
-                    callback(err);
-                } else {
-                    callback(null);
-                }
-            }.bind(this));
-        } else {
-            this.device.setMuted(true, function (err, success) {
-                this.log("Mute attempt with success: " + success);
-                if (err) {
-                    callback(err);
-                } else {
-                    callback(null);
-                }
-            }.bind(this));
-        }
+        this.device.setMuted(!on, function (err, success) {
+            this.log("%s attempt with success: %s", on ? "Unmute" : "Mute", success);
+            callback(err || null);
+        }.bind(this));
     }
-}
+};
 
 SonosAccessory.prototype.getVolume = function (callback) {
     if (!this.device) {
@@ -309,7 +279,6 @@ SonosAccessory.prototype.getVolume = function (callback) {
     }
 
     this.device.getVolume(function (err, volume) {
-
         if (err) {
             callback(err);
         } else {
@@ -318,7 +287,7 @@ SonosAccessory.prototype.getVolume = function (callback) {
         }
 
     }.bind(this));
-}
+};
 
 SonosAccessory.prototype.setVolume = function (volume, callback) {
     if (!this.device) {
@@ -331,10 +300,6 @@ SonosAccessory.prototype.setVolume = function (volume, callback) {
 
     this.device.setVolume(volume + "", function (err, data) {
         this.log("Set volume response with data: " + data);
-        if (err) {
-            callback(err);
-        } else {
-            callback(null);
-        }
+        callback(err || null);
     }.bind(this));
-}
+};
