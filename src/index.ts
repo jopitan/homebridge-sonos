@@ -1,4 +1,5 @@
 const sonos = require('sonos');
+const Sonos = require('sonos').Sonos;
 
 // const Sonos = require('sonos').Sonos;
 // import * as Listener from 'sonos/lib/events/listener';
@@ -142,6 +143,7 @@ class SonosAccessory {
         if (!this.room) throw new Error("You must provide a config value for 'room'.");
 
         this.service = new Service.Switch(this.name);
+
         this.createCharacteristics();
     }
 

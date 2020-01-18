@@ -37,7 +37,9 @@ function _defineProperty(obj, key, value) {
   return obj;
 }
 
-var sonos = require('sonos'); // const Sonos = require('sonos').Sonos;
+var sonos = require('sonos');
+
+var Sonos = require('sonos').Sonos; // const Sonos = require('sonos').Sonos;
 // import * as Listener from 'sonos/lib/events/listener';
 // import * as _ from 'underscore';
 
